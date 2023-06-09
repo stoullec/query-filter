@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="uo3L2.5" resname="bad_request.property.not_defined">
+        <source>bad_request.property.not_defined</source>
+        <target>The property is not defined.</target>
+      </trans-unit>
+      <trans-unit id="xtwQfJP" resname="director.create.title">
+        <source>director.create.title</source>
+        <target>Create director</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,34 @@
+name: Clean all values used in test_suite.yaml in database before launch test_suite.yaml
+
+testcases:
+  - name: TestCase with default value, exec cmd. Check if exit code != 1
+    steps:
+      - script: echo 'foo'
+        type: exec
+
+  - name: GetTEST1ByLastName
+    steps:
+      - type: http
+        method: GET
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: "{{.url}}/director/filter?lastName[eq]=filter_operator_btw_date_lastName"
+
+  - name: init
+    steps:
+    - type: exec
+      script: echo "{{.GetTEST1ByLastName.result.body}}"
+      assertions:
+      - result.code ShouldEqual 0
+
+  - name: DeleteDirectorForTEST1
+    # skip: 
+    # - "{{.GetTEST1ByLastName.result.body}} ShouldNotEqual []" # FIXME le skip ne fonctionne pas 
+    steps:
+      - type: http
+        method: DELETE
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: http://localhost:8000/director/{{.GetTEST1ByLastName.result.bodyjson.bodyjson0.id}}

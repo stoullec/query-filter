@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="fr" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="director.error.salary.too_small">
+                <source>director.error.salary.too_small</source>
+                <target>Le salaire doit être supérieur à 1267€</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -1,0 +1,33 @@
+name: Test all type of property
+testcases:
+  - name: TestCase with default value, exec cmd. Check if exit code != 1
+    steps:
+      - script: echo 'foo'
+        type: exec
+
+  - name: Login
+    steps:
+      - type: http
+        method: POST
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: "{{.url}}/login"
+        body: '{
+            "username": "simontoullec",
+            "password": "azerty"
+        }'
+        assertions:
+          - result.statuscode ShouldEqual 200
+
+  - name: GetAll
+    steps:
+      - type: http
+        method: GET
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+          Cookie: "{{.Login.result.headers.Set-Cookie}}"
+        url: "{{.url}}/director/"
+        assertions:
+          - result.statuscode ShouldEqual 200

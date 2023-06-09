@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="L_LemXp" resname="bad_request.filter_operator.required">
+        <source>bad_request.filter_operator.required</source>
+        <target>At least one filter operator([eq], [btw], etc...) is required.</target>
+      </trans-unit>
+      <trans-unit id="m.Wj9q_" resname="bad_request.property.not_exist">
+        <source>bad_request.property.not_exist</source>
+        <target>The property does not exists in</target>
+      </trans-unit>
+      <trans-unit id="qG1otFQ" resname="bad_request.dql_class.not_exist">
+        <source>bad_request.dql_class.not_exist</source>
+        <target>This filter class name does not exists.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

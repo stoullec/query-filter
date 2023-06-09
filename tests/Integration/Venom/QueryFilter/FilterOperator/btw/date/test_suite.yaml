@@ -1,0 +1,186 @@
+name: TEST Filter between two date
+testcases:
+  - name: TestCase with default value, exec cmd. Check if exit code != 1
+    steps:
+      - script: echo 'foo'
+        type: exec
+
+  #
+  # ==== CREATE OBJECTS FOR TEST1
+  #
+
+  - name: Create Object1 1995-05-22 for TEST1
+    steps:
+      - type: http
+        method: POST
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/'
+        body: '{
+          "lastName": "filter_operator_btw_date_lastName",
+          "firstName": "filter_operator_btw_date_firstName",
+          "{{.filterPropertyDate}}":
+          "1995-05-22"
+          }'
+        assertions:
+          - result.statuscode ShouldEqual 201
+
+  - name: Check if Object1 is created for TEST1
+    steps:
+      - type: http
+        method: GET
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/{{.Create-Object1-1995-05-22-for-TEST1.result.bodyjson.id}}'
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.bodyjson.id ShouldEqual {{.Create-Object1-1995-05-22-for-TEST1.result.bodyjson.id}}
+          - result.bodyjson.birthdate ShouldEqual {{.Create-Object1-1995-05-22-for-TEST1.result.bodyjson.birthdate}}
+
+  - name: Create Object2 born before 1995-04-04 for TEST1
+    steps:
+      - type: http
+        method: POST
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/'
+        body: '{
+          "lastName": "filter_operator_btw_date_lastName",
+          "firstName": "filter_operator_btw_date_firstName",
+          "{{.filterPropertyDate}}":
+          "1995-03-03"
+          }'
+        assertions:
+          - result.statuscode ShouldEqual 201
+
+  - name: Check if Object2 is created for TEST2
+    steps:
+      - type: http
+        method: GET
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/{{.Create-Object2-born-before-1995-04-04-for-TEST1.result.bodyjson.id}}'
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.bodyjson.id ShouldEqual {{.Create-Object2-born-before-1995-04-04-for-TEST1.result.bodyjson.id}}
+          - result.bodyjson.birthdate ShouldEqual {{.Create-Object2-born-before-1995-04-04-for-TEST1.result.bodyjson.birthdate}}
+
+  - name: Create Object3 born after 1995-06-06 for TEST1
+    steps:
+      - type: http
+        method: POST
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/'
+        body: '{
+          "lastName": "filter_operator_btw_date_lastName",
+          "firstName": "filter_operator_btw_date_firstName",
+          "{{.filterPropertyDate}}":
+          "1995-07-07"
+          }'
+        assertions:
+          - result.statuscode ShouldEqual 201
+
+  - name: Check if Object3 is created for TEST2
+    steps:
+      - type: http
+        method: GET
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/{{.Create-Object3-born-after-1995-06-06-for-TEST1.result.bodyjson.id}}'
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.bodyjson.id ShouldEqual {{.Create-Object3-born-after-1995-06-06-for-TEST1.result.bodyjson.id}}
+          - result.bodyjson.birthdate ShouldEqual {{.Create-Object3-born-after-1995-06-06-for-TEST1.result.bodyjson.birthdate}}
+
+  #
+  # ==== TEST1
+  #
+  - name: TEST1 Filter between 1995-04-04 and 1995-06-06
+    steps:
+      - type: http
+        method: GET
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/filter?{{.filterPropertyDate}}[btw]=1995-04-04,1995-06-06'
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.body ShouldContainSubstring  {{.Create-Object1-1995-05-22-for-TEST1.result.bodyjson.birthdate}}
+          - result.body ShouldNotContainSubstring  {{.Create-Object2-born-before-1995-04-04-for-TEST1.result.bodyjson.birthdate}}
+          - result.body ShouldNotContainSubstring  {{.Create-Object3-born-after-1995-06-06-for-TEST1.result.bodyjson.birthdate}}
+
+  #
+  # ==== CLEAN ALL OBJECTS FOR TEST1
+  #
+  - name: Delete Object1 for TEST1
+    steps:
+      - type: http
+        method: DELETE
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/{{.Create-Object1-1995-05-22-for-TEST1.result.bodyjson.id}}'
+        assertions:
+          - result.statuscode ShouldEqual 200
+
+  - name: Check if Object1 is deleted for TEST1
+    steps:
+      - type: http
+        method: GET
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/{{.Create-Object1-1995-05-22-for-TEST1.result.bodyjson.id}}'
+        assertions:
+          - result.statuscode ShouldEqual 404
+
+  - name: Delete Object2 for TEST1
+    steps:
+      - type: http
+        method: DELETE
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/{{.Create-Object2-born-before-1995-04-04-for-TEST1.result.bodyjson.id}}'
+        assertions:
+          - result.statuscode ShouldEqual 200
+
+  - name: Check if Object2 is deleted for TEST1
+    steps:
+      - type: http
+        method: GET
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/{{.Create-Object2-born-before-1995-04-04-for-TEST1.result.bodyjson.id}}'
+        assertions:
+          - result.statuscode ShouldEqual 404
+
+  - name: Delete Object3 for TEST1
+    steps:
+      - type: http
+        method: DELETE
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/{{.Create-Object3-born-after-1995-06-06-for-TEST1.result.bodyjson.id}}'
+        assertions:
+          - result.statuscode ShouldEqual 200
+
+  - name: Check if Object3 is deleted
+    steps:
+      - type: http
+        method: GET
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/{{.Create-Object3-born-after-1995-06-06-for-TEST1.result.bodyjson.id}}'
+        assertions:
+          - result.statuscode ShouldEqual 404

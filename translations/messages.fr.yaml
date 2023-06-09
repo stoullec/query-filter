@@ -1,0 +1,6 @@
+bad_request:
+  property:
+    not_defined: La propriété n'est pas définie.
+director:
+  create:
+    title: Création d'un réalisateur

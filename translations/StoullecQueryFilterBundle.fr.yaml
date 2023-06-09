@@ -1,0 +1,7 @@
+bad_request:
+  filter_operator:
+    required: Au moins un opérateur de filtre([eq], [btw], etc...) est exigé.
+  property:
+    not_exist: La propriété n'existe pas dans
+  dql_class:
+    not_exist: Le nom de class du filtre n'existe pas

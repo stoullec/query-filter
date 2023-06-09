@@ -1,0 +1,185 @@
+name: TEST Filter and logic operator
+testcases:
+  - name: TestCase with default value, exec cmd. Check if exit code != 1
+    steps:
+      - script: echo 'foo'
+        type: exec
+  #
+  # ==== CREATE OBJECTS FOR TEST1
+  #
+
+  - name: Create Object1 equal to Laurent TOULLEC for TEST1
+    steps:
+      - type: http
+        method: POST
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/'
+        body: '{
+          "firstName": "Laurent",
+          "lastName": "TOULLEC",
+          "birthDate": "1995-05-05"
+          }'
+        assertions:
+          - result.statuscode ShouldEqual 201
+
+  - name: Check if Object1 for TEST1 is created
+    steps:
+      - type: http
+        method: GET
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/{{.Create-Object1-equal-to-Laurent-TOULLEC-for-TEST1.result.bodyjson.id}}'
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.bodyjson.id ShouldEqual {{.Create-Object1-equal-to-Laurent-TOULLEC-for-TEST1.result.bodyjson.id}}
+          - result.bodyjson.firstname ShouldEqual {{.Create-Object1-equal-to-Laurent-TOULLEC-for-TEST1.result.bodyjson.firstName}}
+          - result.bodyjson.lastname ShouldEqual {{.Create-Object1-equal-to-Laurent-TOULLEC-for-TEST1.result.bodyjson.lastName}}
+
+  - name: Create Object2 equal to Laurent MAHE for TEST1
+    steps:
+      - type: http
+        method: POST
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/'
+        body: '{
+          "firstName": "Laurent",
+          "lastName": "MAHE",
+          "birthDate": "1995-05-05"
+          }'
+        assertions:
+          - result.statuscode ShouldEqual 201
+
+  - name: Check if Object2 for TEST1 is created
+    steps:
+      - type: http
+        method: GET
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/{{.Create-Object2-equal-to-Laurent-MAHE-for-TEST1.result.bodyjson.id}}'
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.bodyjson.id ShouldEqual {{.Create-Object2-equal-to-Laurent-MAHE-for-TEST1.result.bodyjson.id}}
+          - result.bodyjson.firstname ShouldEqual {{.Create-Object2-equal-to-Laurent-MAHE-for-TEST1.result.bodyjson.firstName}}
+          - result.bodyjson.lastname ShouldEqual {{.Create-Object2-equal-to-Laurent-MAHE-for-TEST1.result.bodyjson.lastName}}
+
+  - name: Create Object3 equal to Marc TOULLEC for TEST1
+    steps:
+      - type: http
+        method: POST
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/'
+        body: '{
+          "firstName": "Marc",
+          "lastName": "TOULLEC",
+          "birthDate": "1995-05-05"
+          }'
+        assertions:
+          - result.statuscode ShouldEqual 201
+
+  - name: Check if Object3 for TEST1 is created
+    steps:
+      - type: http
+        method: GET
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/{{.Create-Object3-equal-to-Marc-TOULLEC-for-TEST1.result.bodyjson.id}}'
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.bodyjson.id ShouldEqual {{.Create-Object3-equal-to-Marc-TOULLEC-for-TEST1.result.bodyjson.id}}
+          - result.bodyjson.firstname ShouldEqual {{.Create-Object3-equal-to-Marc-TOULLEC-for-TEST1.result.bodyjson.firstName}}
+
+  #
+  # ==== TEST1
+  #
+  - name: TEST1 Filter logic operator and
+    steps:
+      - type: http
+        method: GET
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/filter?firstName[eq]=Laurent[and]lastName[eq]=TOULLEC'
+        assertions:
+          - result.statuscode ShouldEqual 200
+          - result.body ShouldContainSubstring  {{.Create-Object1-equal-to-Laurent-TOULLEC-for-TEST1.result.bodyjson.id}}
+          - result.body ShouldNotContainSubstring  {{.Create-Object2-equal-to-Laurent-MAHE-for-TEST1.result.bodyjson.id}}
+          - result.body ShouldNotContainSubstring  {{.Create-Object3-equal-to-Marc-TOULLEC-for-TEST1.result.bodyjson.id}}
+
+  #
+  # ==== CLEAN OBJECTS FOR TEST1
+  #
+
+  - name: Delete Object1 for TEST1
+    steps:
+      - type: http
+        method: DELETE
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/{{.Create-Object1-equal-to-Laurent-TOULLEC-for-TEST1.result.bodyjson.id}}'
+        assertions:
+          - result.statuscode ShouldEqual 200
+
+  - name: Check if Object1 for TEST1 is deleted
+    steps:
+      - type: http
+        method: GET
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/{{.Create-Object1-equal-to-Laurent-TOULLEC-for-TEST1.result.bodyjson.id}}'
+        assertions:
+          - result.statuscode ShouldEqual 404
+
+  - name: Delete Object2 for TEST1
+    steps:
+      - type: http
+        method: DELETE
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/{{.Create-Object2-equal-to-Laurent-MAHE-for-TEST1.result.bodyjson.id}}'
+        assertions:
+          - result.statuscode ShouldEqual 200
+
+  - name: Check if Object2 for TEST1 is deleted
+    steps:
+      - type: http
+        method: GET
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/{{.Create-Object2-equal-to-Laurent-MAHE-for-TEST1.result.bodyjson.id}}'
+        assertions:
+          - result.statuscode ShouldEqual 404
+
+  - name: Delete Object3 for TEST1
+    steps:
+      - type: http
+        method: DELETE
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/{{.Create-Object3-equal-to-Marc-TOULLEC-for-TEST1.result.bodyjson.id}}'
+        assertions:
+          - result.statuscode ShouldEqual 200
+
+  - name: Check if Object3 for TEST1 is deleted
+    steps:
+      - type: http
+        method: GET
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/{{.Create-Object3-equal-to-Marc-TOULLEC-for-TEST1.result.bodyjson.id}}'
+        assertions:
+          - result.statuscode ShouldEqual 404

@@ -1,0 +1,38 @@
+name: TEST Filter operator is required
+testcases:
+  - name: TestCase with default value, exec cmd. Check if exit code != 1
+    steps:
+      - script: echo 'foo'
+        type: exec
+
+  #
+  # ==== TEST1
+  #
+  - name: TEST1 Filter operator is required
+    steps:
+      - type: http
+        method: GET
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/filter?[and]'
+        assertions:
+          - result.statuscode ShouldEqual 400
+          - result.body ShouldContainSubstring Error
+          - result.body ShouldContainSubstring At least one filter operator([eq], [btw], etc...) is required.
+
+  #
+  # ==== TEST2
+  #
+  - name: TEST2 Filter operator is required
+    steps:
+      - type: http
+        method: GET
+        headers:
+          Accept: application/json
+          Content-Type: application/json
+        url: '{{.url}}/{{.filterClass}}/filter?[and]'
+        assertions:
+          - result.statuscode ShouldEqual 400
+          - result.body ShouldContainSubstring Error
+          - result.body ShouldContainSubstring At least one filter operator([eq], [btw], etc...) is required.
