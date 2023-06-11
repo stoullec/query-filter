@@ -3,7 +3,7 @@ namespace Stoullec\QueryFilter;
 
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
-class AcmeTestBundle extends AbstractBundle
+class StoullecQueryFilterBundle extends AbstractBundle
 {
     public function getPath(): string
     {
