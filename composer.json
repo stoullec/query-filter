@@ -1,6 +1,5 @@
 {
     "name": "stoullec/query-filter",
-    "version": "1.0.0",
     "description": "Convert url filter to dql to permit users to filter data with only one endpoint.",
     "type": "library",
     "license": "proprietary",
