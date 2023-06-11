@@ -96,8 +96,6 @@ La partie DQL représente les informations côté Symfony tel que 'App\Entity\..
 
 ## A faire
 
-// TODO transformer en package: je peux utiliser ismail1432/skeletn-bundle
-
 // TODO réaliser la documentation en anglais
 
 // TODO faire le sort
